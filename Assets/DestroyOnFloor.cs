@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class DestroyOnFloor : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	private void OnCollisionEnter(Collision other) {
+		Debug.Log(other.gameObject.name);
+		if (other.gameObject.name == "Floor") {
+			Debug.Log("Oooh I hit the floor!");
+		}
 	}
 }
