@@ -3,19 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-
-	public void StopTime() {
+	public void StopTime () {
 		Time.timeScale = 0.0f;
+	}
+
+	public void StartTime () {
+		Time.timeScale = 1.0f;
 	}
 }

@@ -11,6 +11,5 @@ public class DestroyOnFloor : MonoBehaviour {
             this.gameObject.transform.position = respawnLocation.position;
             this.GetComponent<Rigidbody> ().velocity = Vector3.zero;
         }
-
     }
 }
