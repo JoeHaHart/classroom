@@ -1001,7 +1001,7 @@ MonoBehaviour:
   Selector: {fileID: 1110032175}
   inactiveMaterial: {fileID: 2100000, guid: dc34e0728d9f71d4aa3c78a6bc61c192, type: 2}
   highlightedMaterial: {fileID: 2100000, guid: 8601a3d2fa656c3489f0651394c40b8f, type: 2}
-  selectedVector: {x: 0, y: 0, z: 0}
+  selectedQuaternion: {x: 0, y: 0, z: 0, w: 0}
 --- !u!4 &662361841
 Transform:
   m_ObjectHideFlags: 0
@@ -3215,7 +3215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1691315815}
   m_Layer: 0
-  m_Name: Right
+  m_Name: Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
