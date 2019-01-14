@@ -7,14 +7,21 @@ public class VectorSelector : MonoBehaviour {
 	public Material inactiveMaterial;
 	public Material highlightedMaterial;
 	public Quaternion selectedQuaternion;
+
 	private Dictionary<Quaternion, Renderer> vectors;
+	private Dictionary<Quaternion, Transform> vectorGameObjects;
+	public Transform selectedTransform;
+
 	// Use this for initialization
 	void Start () {
 		vectors = new Dictionary<Quaternion, Renderer> ();
+		vectorGameObjects = new Dictionary<Quaternion, Transform> ();
 
 		foreach (Transform child in transform) {
 			Renderer mat = child.GetComponentInChildren<Renderer> ();
 			vectors.Add (child.transform.rotation, mat);
+			vectorGameObjects.Add (child.transform.rotation, child.GetChild(0));
+
 			Debug.Log ("Added: " + child.transform.eulerAngles.ToString ());
 
 		}
@@ -46,6 +53,7 @@ public class VectorSelector : MonoBehaviour {
 		}
 
 		vectors[closestQuaternion].material = highlightedMaterial;
+		selectedTransform = vectorGameObjects[closestQuaternion];
 	}
 
 }
