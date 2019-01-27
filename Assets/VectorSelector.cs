@@ -2,58 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VectorSelector : MonoBehaviour {
-	public Transform Selector;
-	public Material inactiveMaterial;
-	public Material highlightedMaterial;
-	public Quaternion selectedQuaternion;
+public class VectorSelector : MonoBehaviour
+{
+    public Transform Selector;
+    public Material inactiveMaterial;
+    public Material highlightedMaterial;
 
-	private Dictionary<Quaternion, Renderer> vectors;
-	private Dictionary<Quaternion, Transform> vectorGameObjects;
-	public Transform selectedTransform;
+    private Dictionary<Quaternion, Renderer> vectorRenderers;
+    private Dictionary<Quaternion, Transform> vectorTransforms;
+    public Transform selectedTransform;
 
-	// Use this for initialization
-	void Start () {
-		vectors = new Dictionary<Quaternion, Renderer> ();
-		vectorGameObjects = new Dictionary<Quaternion, Transform> ();
+    // Use this for initialization
+    void Start()
+    {
+        GenerateDictionaries();
+    }
 
-		foreach (Transform child in transform) {
-			Renderer mat = child.GetComponentInChildren<Renderer> ();
-			vectors.Add (child.transform.rotation, mat);
-			vectorGameObjects.Add (child.transform.rotation, child.GetChild(0));
+    void GenerateDictionaries()
+    {
+        vectorRenderers = new Dictionary<Quaternion, Renderer>();
+        vectorTransforms = new Dictionary<Quaternion, Transform>();
+        //Get the vector objects
+        foreach (Transform child in transform)
+        {
+            Renderer renderer = child.GetComponentInChildren<Renderer>();
+            vectorRenderers.Add(child.transform.rotation, renderer);
+            vectorTransforms.Add(child.transform.rotation, child.GetChild(0));
 
-			Debug.Log ("Added: " + child.transform.eulerAngles.ToString ());
+            Debug.Log("Added: " + child.transform.eulerAngles.ToString());
 
-		}
-		Debug.Log (vectors);
-	}
+        }
+    }
 
-	// Update is called once per frame
-	void FixedUpdate () {
-		FindNearestVector ();
-	}
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        FindNearestVector();
+    }
 
-	private void FindNearestVector () {
-		Quaternion selectorAngle = Selector.rotation;
-		Quaternion closestQuaternion = new Quaternion();
-		float closestAngle = 9999999999;
-		Debug.Log("FINDING VECTORS");
-		foreach (KeyValuePair<Quaternion, Renderer> vector in vectors) {
-			//Now you can access the key and value both separately from this attachStat as:
-			float thisDiff = Quaternion.Angle(selectorAngle, vector.Key);
-			// Debug.Log(thisDiff);
-			vectors[vector.Key].material = inactiveMaterial;
+    private void FindNearestVector()
+    {
+        Quaternion selectorAngle = Selector.rotation;
+        Quaternion closestQuaternion = new Quaternion();
+        float smallestAngleDelta = 9999999999;
+        foreach (KeyValuePair<Quaternion, Renderer> vector in vectorRenderers)
+        {
+            float angleDelta = Quaternion.Angle(selectorAngle, vector.Key);
+           // Set all vectors to be inactive initially.
+		    vectorRenderers[vector.Key].material = inactiveMaterial;
+			
+            if (angleDelta < smallestAngleDelta)
+            {
+                smallestAngleDelta = angleDelta;
+                closestQuaternion = vector.Key;
+            }
+        }
 
-			if (thisDiff < closestAngle) {
-				// Debug.Log("new vecttor: " + vector.Key);
-				closestAngle = thisDiff;
-				closestQuaternion = vector.Key;
-			}
-			Debug.Log("Selector: " + selectorAngle + " Vector: " + vector.Key + " Diff: " + thisDiff);
-		}
+		// Set only the closest vector to be highlighted
+        vectorRenderers[closestQuaternion].material = highlightedMaterial;
+        selectedTransform = vectorTransforms[closestQuaternion];
+    }
 
-		vectors[closestQuaternion].material = highlightedMaterial;
-		selectedTransform = vectorGameObjects[closestQuaternion];
-	}
-
+    private Vector3 GetSelectedUnitVector()
+    {
+		Vector3 directionVector = selectedTransform.rotation * Vector3.forward;
+		return directionVector.normalized;
+    }
 }
