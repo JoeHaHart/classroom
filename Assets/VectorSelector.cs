@@ -48,9 +48,9 @@ public class VectorSelector : MonoBehaviour
         foreach (KeyValuePair<Quaternion, Renderer> vector in vectorRenderers)
         {
             float angleDelta = Quaternion.Angle(selectorAngle, vector.Key);
-           // Set all vectors to be inactive initially.
-		    vectorRenderers[vector.Key].material = inactiveMaterial;
-			
+            // Set all vectors to be inactive initially.
+            vectorRenderers[vector.Key].material = inactiveMaterial;
+
             if (angleDelta < smallestAngleDelta)
             {
                 smallestAngleDelta = angleDelta;
@@ -58,14 +58,16 @@ public class VectorSelector : MonoBehaviour
             }
         }
 
-		// Set only the closest vector to be highlighted
+        // Set only the closest vector to be highlighted
         vectorRenderers[closestQuaternion].material = highlightedMaterial;
         selectedTransform = vectorTransforms[closestQuaternion];
     }
 
-    private Vector3 GetSelectedUnitVector()
+    public Vector3 GetSelectedUnitVector()
     {
-		Vector3 directionVector = selectedTransform.rotation * Vector3.forward;
-		return directionVector.normalized;
+        Vector3 directionVector = selectedTransform.rotation * Vector3.forward;
+        Debug.Log(directionVector);
+        return directionVector.normalized;
     }
+
 }
