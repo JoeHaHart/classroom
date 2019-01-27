@@ -14,7 +14,7 @@ public class Debug_3D : MonoBehaviour {
 
 	void Start() {
 		if (localDebug) {
-			text = Instantiate(debugTextPrefab, transform.position + positionOffset, transform.rotation, transform);
+			text = Instantiate(debugTextPrefab, transform.position + positionOffset, transform.rotation);
 			text.transform.localScale = new Vector3(scale, scale, scale);
 		}
 	}
@@ -23,6 +23,7 @@ public class Debug_3D : MonoBehaviour {
 	void Update () {
 		if(localDebug) {
 			text.GetComponent<TextMesh>().text = prefix + ": " + transform.localEulerAngles.ToString();
+			text.transform.position = transform.position;
 			text.transform.LookAt(lookTarget);
 			text.transform.Rotate(rotationOffset);
 		}
