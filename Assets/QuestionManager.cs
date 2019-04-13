@@ -67,7 +67,7 @@ public class QuestionManager : MonoBehaviour
             {
                 launched = true;
                 questionInstance.SetActive(false);
-                JoeJeffTransform.gameObject.GetComponent<FreezeMe>().UnFreeze(launchDirection);
+                JoeJeffTransform.gameObject.GetComponent<Parabola>().UnFreeze(launchDirection);
             }
         }
     }
